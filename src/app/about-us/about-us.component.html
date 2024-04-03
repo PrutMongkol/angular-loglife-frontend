@@ -1,0 +1,58 @@
+<app-layout>
+  <main class="mx-auto px-3 md:container md:my-3 md:rounded-lg md:bg-white md:shadow-lg">
+    <div>
+      <p class="mt-6 px-4 text-5xl font-semibold">About Us</p>
+    </div>
+    <div class="mt-5">
+      <div
+        *ngFor="let member of teamProfile"
+        class="mb-5 max-md:max-w-max"
+      >
+        <div class="mx-3 my-3 flex justify-center rounded-xl bg-slate-300 px-3 py-4 shadow-xl max-md:my-0 max-md:flex-col max-md:py-3">
+          <div class="h-56 w-48 flex-shrink-0 self-center px-3 max-md:w-full max-md:px-1 max-md:py-1">
+            <img
+              [src]="member.pic"
+              alt="avatar"
+              class="h-56 w-48 rounded-xl object-cover max-md:w-full"
+            />
+          </div>
+          <div class=" flex w-full flex-col flex-wrap self-center px-2 py-4 max-md:py-2">
+            <h1 class="pt-2 text-3xl font-bold max-md:text-2xl">
+              {{member.name}}
+            </h1>
+            <p class="text-md mt-1 font-medium max-md:text-sm">
+              {{member.shortBio}}
+            </p>
+            <hr class="my-3" />
+            <p class="text-justify font-normal max-md:text-sm">
+              {{member.longBio}}
+            </p>
+            <div class="mt-4 flex justify-end space-x-4 text-2xl">
+              <a
+                [href]="member.gitHub"
+                class="hover:cursor-pointer"
+                target="_blank"
+              >
+                GitHub
+              </a>
+              <a
+                [href]="member.linkedIn"
+                class="hover:cursor-pointer"
+                target="_blank"
+              >
+                LinkedIn
+              </a>
+              <a
+                [href]="member.personalSite"
+                class="hover:cursor-pointer"
+                target="_blank"
+              >
+                Website
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</app-layout>
