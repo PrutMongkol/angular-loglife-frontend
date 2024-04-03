@@ -1,30 +1,22 @@
-<div class="sticky top-0 z-10 w-full">
+<div
+  class="sticky top-0 z-10 w-full"
+  [class.hidden]="isLoggedIn"
+>
   <nav>
-    <div
-      class="navbar bg-white drop-shadow-md"
-      [class.hidden]="isLoggedIn"
-    >
+    <div class="navbar bg-white drop-shadow-md">
       <div class="navbar-start">
         <a href="/" class="ml-3">
           <img src="../../assets/logo_black.svg" alt="LogLife logo" />
         </a>
         <ul class="menu menu-horizontal font-medium">
           <li>
-            <a
-              href="/aboutus"
-              class="text-sm md:text-base"
-            >
-              About Us
-            </a>
+            <a href="/aboutus" class="text-sm md:text-base"> About Us </a>
           </li>
         </ul>
       </div>
 
       <div class="navbar-end">
-        <a
-          href="/login"
-          class="btn btn-ghost mx-3 text-base max-md:btn-sm"
-        >
+        <a href="/login" class="btn btn-ghost mx-3 text-base max-md:btn-sm">
           Login
         </a>
         <a
