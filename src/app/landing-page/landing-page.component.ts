@@ -6,7 +6,6 @@ import { LayoutComponent } from '../layout/layout.component';
   standalone: true,
   imports: [LayoutComponent],
   templateUrl: './landing-page.component.html',
-  styleUrl: './landing-page.component.css'
 })
 export class LandingPageComponent {
 

@@ -6,6 +6,5 @@ import { LayoutComponent } from '../layout/layout.component';
   standalone: true,
   imports: [LayoutComponent],
   templateUrl: './activity-list.component.html',
-  styleUrl: './activity-list.component.css',
 })
 export class ActivityListComponent {}

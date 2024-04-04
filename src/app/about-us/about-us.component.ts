@@ -7,7 +7,6 @@ import { NgFor } from '@angular/common';
   standalone: true,
   imports: [LayoutComponent, NgFor],
   templateUrl: './about-us.component.html',
-  styleUrl: './about-us.component.css',
 })
 export class AboutUsComponent {
   teamProfile = [

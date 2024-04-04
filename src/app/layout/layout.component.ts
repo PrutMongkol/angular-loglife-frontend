@@ -7,7 +7,6 @@ import { FooterComponent } from '../footer/footer.component';
   standalone: true,
   imports: [NavComponent, FooterComponent],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css',
   host: {'class': 'h-[100svh] flex flex-col'}
 })
 export class LayoutComponent {
