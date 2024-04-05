@@ -1,7 +1,7 @@
-export const ACTIVITIES = [{
-  "_id": {
-    "$oid": "660e6b49af25ac37c491da24"
-  },
+import { Activity } from './app/activity';
+
+export const ACTIVITIES: Activity[] = [{
+  "activityId": "660e6b49af25ac37c491da24",
   "title": "Running",
   "description": "",
   "type": "Running",
@@ -12,15 +12,10 @@ export const ACTIVITIES = [{
     "hour": 4,
     "minute": 6
   },
-  "barometer": "1",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "1"
 },
 {
-  "_id": {
-    "$oid": "660e6b5faf25ac37c491da26"
-  },
+  "activityId": "660e6b5faf25ac37c491da26",
   "title": "Cycling",
   "description": "",
   "type": "Cycling",
@@ -31,15 +26,10 @@ export const ACTIVITIES = [{
     "hour": 2,
     "minute": 0
   },
-  "barometer": "2",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "2"
 },
 {
-  "_id": {
-    "$oid": "660e6b8aaf25ac37c491da27"
-  },
+  "activityId": "660e6b8aaf25ac37c491da27",
   "title": "Swimming",
   "description": "",
   "type": "Swimming",
@@ -50,15 +40,10 @@ export const ACTIVITIES = [{
     "hour": 2,
     "minute": 0
   },
-  "barometer": "3",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "3"
 },
 {
-  "_id": {
-    "$oid": "660e6b93af25ac37c491da29"
-  },
+  "activityId": "660e6b93af25ac37c491da29",
   "title": "Walking",
   "description": "",
   "type": "Walking",
@@ -69,15 +54,10 @@ export const ACTIVITIES = [{
     "hour": 2,
     "minute": 0
   },
-  "barometer": "4",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "4"
 },
 {
-  "_id": {
-    "$oid": "660e6bbbaf25ac37c491da2a"
-  },
+  "activityId": "660e6bbbaf25ac37c491da2a",
   "title": "Hiking",
   "description": "",
   "type": "Hiking",
@@ -88,15 +68,10 @@ export const ACTIVITIES = [{
     "hour": 2,
     "minute": 0
   },
-  "barometer": "5",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "5"
 },
 {
-  "_id": {
-    "$oid": "660e6bc9af25ac37c491da2b"
-  },
+  "activityId": "660e6bc9af25ac37c491da2b",
   "title": "Other",
   "description": "",
   "type": "Other",
@@ -107,8 +82,5 @@ export const ACTIVITIES = [{
     "hour": 2,
     "minute": 2
   },
-  "barometer": "3",
-  "userId": {
-    "$oid": "660e6b21af25ac37c491da23"
-  }
+  "barometer": "3"
 }];
