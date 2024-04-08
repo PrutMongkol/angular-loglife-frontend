@@ -12,8 +12,6 @@ export class ActivityService {
   constructor() {}
 
   getActivities(type?: string): Observable<Activity[]> {
-    console.log('ActivityService.getActivities', type);
-
     const activities = of(
       type
         ? ACTIVITIES.filter((activity) => activity.type === type)
