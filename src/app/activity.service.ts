@@ -6,14 +6,19 @@ import { Activity } from './activity';
 import { ACTIVITIES } from '../mock-data';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ActivityService {
+  constructor() {}
 
-  constructor() { }
+  getActivities(type?: string): Observable<Activity[]> {
+    console.log('ActivityService.getActivities', type);
 
-  getActivities(): Observable<Activity[]> {
-    const activities = of(ACTIVITIES);
+    const activities = of(
+      type
+        ? ACTIVITIES.filter((activity) => activity.type === type)
+        : ACTIVITIES
+    );
     return activities;
   }
 }

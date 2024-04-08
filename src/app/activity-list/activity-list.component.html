@@ -7,7 +7,9 @@
         Activities
       </div>
       <div class="flex justify-between">
-        <div class="flex max-md:overflow-scroll">SELECTOR BUTTON</div>
+        <div class="flex max-md:overflow-scroll">
+          <app-activity-group-selector [selectedGroup]="selectedGroup" (selectedGroupChange)="onSelectedGroupChange($event)" />
+        </div>
         SORT BUTTON
       </div>
     </div>
@@ -15,7 +17,10 @@
       <div
         class="flex-auto md:grid md:grid-cols-2 md:gap-x-3 md:gap-y-3 lg:grid-cols-3 lg:gap-x-3 xl:grid-cols-4 xl:gap-x-4"
       >
-        <app-listed-card *ngFor="let activity of activities" [activity]="activity"/>
+        <app-listed-card
+          *ngFor="let activity of activities"
+          [activity]="activity"
+        />
       </div>
     </div>
   </main>
