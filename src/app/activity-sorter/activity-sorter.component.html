@@ -1,0 +1,16 @@
+<div class="flex justify-around align-middle">
+  <div class="join mb-2 mt-2">
+    <button
+      *ngFor="let choice of sortOptions"
+      class="join-item btn-sm"
+      [class]="
+        choice === selectedSort
+          ? 'btn btn-accent text-neutral'
+          : 'hover:text btn btn-outline btn-accent'
+      "
+      (click)="onSortSelected(choice)"
+    >
+      {{ choice }}
+    </button>
+  </div>
+</div>

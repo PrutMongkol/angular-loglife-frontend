@@ -8,9 +8,15 @@
       </div>
       <div class="flex justify-between">
         <div class="flex max-md:overflow-scroll">
-          <app-activity-group-selector [selectedGroup]="selectedGroup" (selectedGroupChange)="onSelectedGroupChange($event)" />
+          <app-activity-group-selector
+            [selectedGroup]="selectedGroup"
+            (selectedGroupChange)="onSelectedGroupChange($event)"
+          />
         </div>
-        SORT BUTTON
+        <app-activity-sorter
+          [selectedSort]="selectedSort"
+          (selectedSortChange)="onSelectedSortChange($event)"
+        />
       </div>
     </div>
     <div class="flex flex-col max-md:mt-3">
