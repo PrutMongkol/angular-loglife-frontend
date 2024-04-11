@@ -24,4 +24,8 @@ export class ActivityService {
         `?type=${type}&sort=${sort}&skip=${skip}&take=${take}`
     );
   }
+
+  getActivityById(id: string): Observable<Activity> {
+    return this.http.get<Activity>(environment.apiUrl + '/activities/' + id);
+  }
 }

@@ -43,8 +43,7 @@ export class ListedCardComponent implements OnInit {
   formatDuration = formatDuration;
 
   handleShowDetails(id: any) {
-    // this.router.navigate([`/activities/${id}`]);
-    alert('Not Implemented');
+    this.router.navigate([`/activities/${id}`]);
   }
 
   handleEdit(id: any) {
