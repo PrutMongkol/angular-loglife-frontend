@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 
 import { AuthService } from '../auth.service';
+import { ActivityAddButtonComponent } from '../activity-add-button/activity-add-button.component';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [],
+  imports: [ActivityAddButtonComponent],
   templateUrl: './nav.component.html',
 })
 export class NavComponent {
