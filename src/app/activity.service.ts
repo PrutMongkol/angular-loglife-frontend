@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
 
 import { Activity } from './activity';
-import { ACTIVITIES } from '../mock-data';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActivityService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  getActivities(type?: string): Observable<Activity[]> {
-    const activities = of(
-      type
-        ? ACTIVITIES.filter((activity) => activity.type === type)
-        : ACTIVITIES
+  getActivities(
+    type = '',
+    sort = '',
+    skip = '',
+    take = ''
+  ): Observable<Activity[]> {
+    return this.http.get<Activity[]>(
+      environment.apiUrl +
+        '/activities/user/me' +
+        `?type=${type}&sort=${sort}&skip=${skip}&take=${take}`
     );
-    return activities;
   }
 }
