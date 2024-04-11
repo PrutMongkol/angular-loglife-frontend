@@ -2,22 +2,22 @@
   <nav [class.hidden]="isLoggedIn === true">
     <div class="navbar bg-white drop-shadow-md">
       <div class="navbar-start">
-        <a href="/" class="ml-3">
+        <a routerLink="/" class="ml-3">
           <img src="../../assets/logo_black.svg" alt="LogLife logo" />
         </a>
         <ul class="menu menu-horizontal font-medium">
           <li>
-            <a href="/about-us" class="text-sm md:text-base"> About Us </a>
+            <a routerLink="/about-us" class="text-sm md:text-base"> About Us </a>
           </li>
         </ul>
       </div>
 
       <div class="navbar-end">
-        <a href="/login" class="btn btn-ghost mx-3 text-base max-md:btn-sm">
+        <a routerLink="/login" class="btn btn-ghost mx-3 text-base max-md:btn-sm">
           Login
         </a>
         <a
-          href="/signup"
+          routerLink="/signup"
           class="btn btn-primary mr-3 text-base text-white max-md:btn-sm hover:bg-[#1357B8]"
         >
           Sign Up
@@ -66,7 +66,7 @@
             </div>
             <hr />
             <li>
-              <a class="py-5 text-base" href="/activities">
+              <a class="py-5 text-base" routerLink="/activities">
                 <i class="fa-solid fa-person-running fa-xl"></i>
                 Activities
               </a>
@@ -79,19 +79,19 @@
               </span>
             </li>
             <li class="sm:hidden">
-              <a class="py-5 text-base" href="/settings">
+              <a class="py-5 text-base" routerLink="/settings">
                 <i class="fa-solid fa-gear fa-lg"></i>Settings
               </a>
             </li>
             <li class="sm:hidden">
-              <a class="py-5 text-base text-info" href="/logout">
+              <a class="py-5 text-base text-info" routerLink="/logout">
                 <i class="fa-solid fa-right-to-bracket fa-lg text-info"></i>
                 Logout
               </a>
             </li>
             <hr />
             <li>
-              <a class="py-5 text-base" href="/about-us">
+              <a class="py-5 text-base" routerLink="/about-us">
                 <i class="fa-solid fa-user-group"></i>About Us
               </a>
             </li>
@@ -99,7 +99,7 @@
         </div>
       </div>
       <div class="navbar-center">
-        <a href="/">
+        <a routerLink="/">
           <img src="../../assets/logo_black.svg" alt="LogLife logo" />
         </a>
       </div>
@@ -128,12 +128,12 @@
             </p>
             <hr />
             <li>
-              <a class="py-5 text-base" href="#">
+              <a class="py-5 text-base" routerLink="/settings">
                 <i class="fa-solid fa-gear fa-lg"></i>Settings
               </a>
             </li>
             <li>
-              <a class="py-5 text-base text-info" href="/logout">
+              <a class="py-5 text-base text-info" routerLink="/logout">
                 <i class="fa-solid fa-right-to-bracket fa-lg text-info"></i>
                 Logout
               </a>
@@ -144,13 +144,13 @@
     </div>
     <div class="navbar bg-white drop-shadow-md max-lg:hidden">
       <div class="navbar-start">
-        <a href="/" class="ml-3">
+        <a routerLink="/" class="ml-3">
           <img src="../../assets/logo_black.svg" alt="LogLife logo" />
         </a>
         <div>
           <ul class="menu menu-horizontal space-x-2 font-medium">
             <li>
-              <a href="/activities" class="text-base"> Activity List </a>
+              <a routerLink="/activities" class="text-base"> Activity List </a>
             </li>
             <li>
               <div
@@ -161,7 +161,7 @@
               </div>
             </li>
             <li>
-              <a href="/about-us" class="text-base"> About Us </a>
+              <a routerLink="/about-us" class="text-base"> About Us </a>
             </li>
           </ul>
         </div>
@@ -191,12 +191,12 @@
             </p>
             <hr />
             <li>
-              <a class="py-5 text-base" href="/settings">
+              <a class="py-5 text-base" routerLink="/settings">
                 <i class="fa-solid fa-gear fa-lg"></i>Settings
               </a>
             </li>
             <li>
-              <a class="py-5 text-base text-info" href="/logout">
+              <a class="py-5 text-base text-info" routerLink="/logout">
                 <i class="fa-solid fa-right-to-bracket fa-lg text-info"></i>
                 Logout
               </a>

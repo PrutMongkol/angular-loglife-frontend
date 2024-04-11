@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import { ActivityAddButtonComponent } from '../activity-add-button/activity-add-button.component';
@@ -6,7 +7,7 @@ import { ActivityAddButtonComponent } from '../activity-add-button/activity-add-
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [ActivityAddButtonComponent],
+  imports: [ActivityAddButtonComponent, RouterModule],
   templateUrl: './nav.component.html',
 })
 export class NavComponent {
