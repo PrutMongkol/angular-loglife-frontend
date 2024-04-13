@@ -1,11 +1,183 @@
 <app-layout>
-  <p>activity-details works!</p>
-  <ul>
-    <li>
-      {{ activity?.activityId }}
-    </li>
-    <li>
-      {{ activity?.title}}
-    </li>
-  </ul>
+  <main
+    class="container mx-auto flex max-w-2xl flex-col items-center max-md:h-fit md:mt-auto md:flex-row md:rounded-2xl md:bg-white md:shadow-xl"
+  >
+    <div
+      class="flex w-full items-center justify-center md:h-full md:flex-1 md:flex-col-reverse md:rounded-l-2xl"
+      [class]="barometerColorClass"
+    >
+      <h1
+        class="flex-auto text-center text-5xl font-semibold text-white md:flex-none md:-translate-y-10 md:px-2"
+      >
+        {{ activity!.type.toUpperCase() }}
+      </h1>
+      <img
+        class="ml-2 mt-2 size-24 md:size-32 md:-translate-y-10"
+        [src]="barometerImageUrl"
+        alt="barometer"
+      />
+    </div>
+    <div class="w-full p-2">
+      <!-- {activity.image && (
+    <div>
+      <img
+        class="max:md:max-h-56 max-h-64 w-full object-cover pb-2 max-sm:max-h-44 md:rounded-tr-2xl"
+        src={activity.image.url}
+        alt="activity"
+      />
+      <button
+        class="absolute flex min-h-12 min-w-12 -translate-y-16 translate-x-2 items-center justify-center rounded-full border-2 border-warning bg-white shadow-lg"
+        onClick={() =>
+          document.getElementById("change_image_modal").showModal()
+        }
+      >
+        <span
+          class="material-symbols-outlined"
+          style={materialIconStyle}
+        >
+          image
+        </span>
+      </button>
+    </div>
+  )} -->
+      <div class="flex flex-row items-center gap-2">
+        <div
+          class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
+        >
+          <span class="material-symbols-outlined">
+            {{ materialIcons[activity!.type] }}
+          </span>
+        </div>
+        <h2 class="text-lg font-bold">{{ activity!.title }}</h2>
+      </div>
+      <div class="my-2 h-0.5 bg-base-200"></div>
+      <div class="flex flex-row items-center gap-2">
+        <div
+          class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
+        >
+          <span class="material-symbols-outlined"> description </span>
+        </div>
+        <p class="font-light">
+          {{ activity?.description || "It was good effort!" }}
+        </p>
+      </div>
+      <div class="my-2 h-0.5 bg-base-200"></div>
+      <div class="flex flex-row items-center gap-2">
+        <div
+          class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
+        >
+          <span class="material-symbols-outlined"> date_range </span>
+        </div>
+        <p class="font-light">{{ dt }}</p>
+      </div>
+      <div class="my-2 h-0.5 bg-base-200"></div>
+      <div class="flex flex-row items-center gap-2">
+        <div
+          class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
+        >
+          <span class="material-symbols-outlined"> schedule </span>
+        </div>
+        <div>
+          <p class="font-light">
+            {{ activity!.startTime }} - {{ activity!.endTime }}
+          </p>
+          <p class="font-light">
+            {{
+              formatDuration(activity!.duration.hour, "hour", "hours") +
+                " " +
+                formatDuration(activity!.duration.minute, "minute", "minutes")
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="my-2 h-0.5 bg-base-200"></div>
+      <div class="flex flex-row items-center gap-2">
+        <div
+          class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
+        >
+          <span class="material-symbols-outlined">
+            {{ barometerIconMaterial }}
+          </span>
+        </div>
+        <p class="font-light">
+          Feeling: {{ barometerTexts[activity!.barometer] }}
+        </p>
+      </div>
+      <div class="my-2 h-0.5 bg-base-200"></div>
+
+      <div class="flex justify-between py-4">
+        <div class="tooltip tooltip-secondary" data-tip="Back">
+          <button
+            class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-primary bg-white shadow-md"
+            (click)="goBack()"
+          >
+            <span class="material-symbols-outlined"> arrow_back </span>
+          </button>
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <!-- {activity.image ? ( -->
+          <div class="h-2 w-2"></div>
+          <!-- ) : (
+        <div
+          class="tooltip tooltip-success"
+          data-tip="Add Photo"
+        >
+          <button
+            class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-power bg-white shadow-md"
+            onClick={() =>
+              document
+                .getElementById("upload_image_modal")
+                .showModal()
+            }
+          >
+            <span
+              class="material-symbols-outlined"
+              style={materialIconStyle}
+            >
+              add_photo_alternate
+            </span>
+          </button>
+        </div>
+      )} -->
+          <div class="tooltip tooltip-success" data-tip="Edit Activity">
+            <button
+              class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-power bg-white shadow-md"
+              (click)="handleEdit()"
+            >
+              <span class="material-symbols-outlined"> edit </span>
+            </button>
+          </div>
+
+          <div class="md:tooltip md:tooltip-info" data-tip="Delete Activity">
+            <button
+              class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-info bg-white shadow-md"
+              (click)="delete_modal.showModal()"
+            >
+              <span class="material-symbols-outlined"> delete </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <dialog id="delete_modal" #delete_modal class="modal modal-bottom sm:modal-middle">
+    <div class="modal-box">
+      <h3 class="text-lg font-bold">Delete Activity</h3>
+      <p class="py-4">
+        Are you sure you want to delete this activity?
+        <br />
+        This cannot be undone.
+      </p>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn mr-2">Cancel</button>
+          <button class="btn btn-info text-white" (click)="handleDelete()">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 </app-layout>

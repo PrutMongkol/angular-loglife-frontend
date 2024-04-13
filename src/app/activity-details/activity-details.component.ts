@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
 import { LayoutComponent } from '../layout/layout.component';
 import { ActivityService } from '../activity.service';
+import { formatDuration } from '../shared/format-duration';
 
 @Component({
   selector: 'app-activity-details',
@@ -15,6 +16,7 @@ import { ActivityService } from '../activity.service';
   styleUrl: './activity-details.component.css',
 })
 export class ActivityDetailsComponent implements OnInit {
+  @ViewChild('delete_modal') delete_modal?: ElementRef;
   activity?: Activity;
 
   barometerColors: { [key: string]: string } = {
@@ -33,7 +35,7 @@ export class ActivityDetailsComponent implements OnInit {
     4: '../assets/baro_4.png',
     5: '../assets/baro_5.png',
   };
-  barometerImaegUrl: string;
+  barometerImageUrl: string;
 
   barometerIcons: { [key: string]: string } = {
     1: 'sentiment_very_dissatisfied',
@@ -66,13 +68,14 @@ export class ActivityDetailsComponent implements OnInit {
 
   constructor(
     private activityService: ActivityService,
+    private router: Router,
     private route: ActivatedRoute,
     private location: Location
   ) {
     this.barometerColorClass = this.activity?.barometer
       ? this.barometerColors[this.activity.barometer]
       : '1';
-    this.barometerImaegUrl = this.activity?.barometer
+    this.barometerImageUrl = this.activity?.barometer
       ? this.barometerImages[this.activity.barometer]
       : '../assets/baro_1.png';
     this.barometerIconMaterial = this.activity?.barometer
@@ -90,6 +93,8 @@ export class ActivityDetailsComponent implements OnInit {
     this.getActivity();
   }
 
+  formatDuration = formatDuration;
+
   goBack(): void {
     this.location.back();
   }
@@ -102,6 +107,31 @@ export class ActivityDetailsComponent implements OnInit {
     }
     this.activityService.getActivityById(id).subscribe((activity) => {
       this.activity = activity;
+      this.barometerColorClass = this.activity?.barometer
+        ? this.barometerColors[this.activity.barometer]
+        : '1';
+      this.barometerImageUrl = this.activity?.barometer
+        ? this.barometerImages[this.activity.barometer]
+        : '../assets/baro_1.png';
+      this.barometerIconMaterial = this.activity?.barometer
+        ? this.barometerIcons[this.activity.barometer]
+        : 'sentiment_very_dissatisfied';
+      this.barometerText = this.activity?.barometer
+        ? this.barometerTexts[this.activity.barometer]
+        : 'Very Weak';
+      this.dt = this.activity?.date
+        ? DateTime.fromISO(this.activity.date).toLocaleString(
+            DateTime.DATE_HUGE
+          )
+        : '';
     });
+  }
+
+  handleEdit(): void {
+    this.router.navigate([`/activities/edit/${this.activity?.activityId}`]);
+  }
+
+  handleDelete(): void {
+    alert('Not Implemented Yet');
   }
 }
