@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
@@ -11,7 +11,7 @@ import { formatDuration } from '../shared/format-duration';
 @Component({
   selector: 'app-activity-details',
   standalone: true,
-  imports: [LayoutComponent],
+  imports: [LayoutComponent, CommonModule],
   templateUrl: './activity-details.component.html',
   styleUrl: './activity-details.component.css',
 })
