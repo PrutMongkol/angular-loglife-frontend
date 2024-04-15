@@ -84,7 +84,10 @@
 <main
   class="container mx-auto px-2 py-2 md:my-4 md:max-w-lg md:rounded-xl md:bg-white md:drop-shadow-md lg:px-4"
 >
-  <form class="mx-3 my-3 flex h-full flex-col justify-between gap-4">
+  <form
+    class="mx-3 my-3 flex h-full flex-col justify-between gap-4"
+    [formGroup]="activityForm"
+  >
     <!-- onSubmit={handleSubmit} -->
     <h1 class="text-5xl font-semibold">{{ formHeading }}</h1>
     <fieldset>
@@ -93,113 +96,118 @@
         class="input input-bordered w-full text-sm"
         type="text"
         aria-label="Activity Title"
+        formControlName="title"
+        [placeholder]="activityForm.value.type + ' (default)'"
       />
       <!--
-      placeholder=activityType + " (default)"
-      value=title
       onChange=(e) => setTitle(e.target.value)
       -->
     </fieldset>
-  </form>
 
-  <fieldset>
-    <h2 class="text-base font-medium md:text-xl">Description</h2>
-    <textarea
-      class="text-sn textarea textarea-bordered w-full resize-none"
-    ></textarea>
-    <!--
-      placeholder="Notes for anything (optional)"
-      value=description
+    <fieldset>
+      <h2 class="text-base font-medium md:text-xl">Description</h2>
+      <textarea
+        class="text-sn textarea textarea-bordered w-full resize-none"
+        formControlName="description"
+        placeholder="Notes for anything (optional)"
+      ></textarea>
+      <!--
       onChange=(e) => setDescription(e.target.value)
      -->
-  </fieldset>
+    </fieldset>
 
-  <fieldset>
-    <h2 class="text-base font-medium md:text-xl">Activity Type</h2>
+    <fieldset>
+      <h2 class="text-base font-medium md:text-xl">Activity Type</h2>
 
-    <div class="grid max-w-full grid-cols-3 justify-around gap-2">
-      <!-- TODO: ngFor -->
-      <label
-        class="group flex cursor-pointer flex-col items-center rounded bg-base-200 p-2 hover:bg-base-300 has-[:checked]:bg-primary"
-      >
-        <input class="peer hidden" required type="radio" name="activityType" />
-        <!--
-          value={type}
-          aria-label={type}
+      <div class="grid max-w-full grid-cols-3 justify-around gap-2">
+        <label
+          *ngFor="let typeIcon of activityTypeIcons"
+          class="group flex cursor-pointer flex-col items-center rounded bg-base-200 p-2 hover:bg-base-300 has-[:checked]:bg-primary"
+        >
+          <input
+            class="peer hidden"
+            required
+            type="radio"
+            name="activityType"
+            formControlName="type"
+            [value]="typeIcon['type']"
+            [ariaLabel]="typeIcon['type']"
+          />
+          <!--
           checked={activityType === type}
           onChange={(e) => setActivityType(e.target.value)}
          -->
-        <span
-          class="material-symbols-outlined select-none text-7xl text-base-300 group-hover:text-base-200 peer-checked:text-base-100"
-        >
-          timer
-        </span>
-        <span class="radio-label select-none peer-checked:text-base-100">
-          type
-        </span>
-      </label>
-    </div>
-  </fieldset>
+          <span
+            class="material-symbols-outlined select-none text-7xl text-base-300 group-hover:text-base-200 peer-checked:text-base-100"
+          >
+            {{ typeIcon["icon"] }}
+          </span>
+          <span class="radio-label select-none peer-checked:text-base-100">
+            {{ typeIcon["type"] }}
+          </span>
+        </label>
+      </div>
+    </fieldset>
 
-  <fieldset class="flex max-w-full items-center gap-2">
-    <h2 class="text-base font-medium md:text-xl">Date:</h2>
-    <input
-      class="h-9 rounded border-2 px-2"
-      type="date"
-      required
-      aria-label="Date"
-    />
-    <!--
-      value=date
+    <fieldset class="flex max-w-full items-center gap-2">
+      <h2 class="text-base font-medium md:text-xl">Date:</h2>
+      <input
+        class="h-9 rounded border-2 px-2"
+        type="date"
+        required
+        aria-label="Date"
+        formControlName="date"
+      />
+      <!--
       onChange=(e) =>
       setDate(e.target.value);
      -->
-  </fieldset>
+    </fieldset>
 
-  <fieldset class="flex max-w-full flex-col justify-around">
-    <div class="flex flex-row items-center gap-2">
-      <h2 class="text-base font-medium md:text-xl">From:</h2>
-      <input
-        class="h-9 max-w-28 rounded border-2 px-2"
-        type="time"
-        required
-        aria-label="Start time"
-      />
-      <!--
-        value={startTime}
+    <fieldset class="flex max-w-full flex-col justify-around">
+      <div class="flex flex-row items-center gap-2">
+        <h2 class="text-base font-medium md:text-xl">From:</h2>
+        <input
+          class="h-9 max-w-28 rounded border-2 px-2"
+          type="time"
+          required
+          aria-label="Start time"
+          formControlName="startTime"
+        />
+        <!--
         onChange={(e) => {
           setStartTime(e.target.value);
         }}
        -->
-      <span>→</span>
-      <span class="text-base font-medium md:text-xl">To:</span>
-      <input
-        class="h-9 max-w-28 rounded border-2 px-2"
-        type="time"
-        required
-        aria-label="End time"
-      />
-      <!--
-        value={endTime}
+        <span>→</span>
+        <span class="text-base font-medium md:text-xl">To:</span>
+        <input
+          class="h-9 max-w-28 rounded border-2 px-2"
+          type="time"
+          required
+          aria-label="End time"
+          formControlName="endTime"
+        />
+        <!--
         onChange={(e) => {
           setEndTime(e.target.value);
         }}
        -->
-    </div>
-    <span class="text-red-500">
-      <!-- {duration.hour === 0 && duration.minute === 0 ? formErrors.time : ""} -->
-    </span>
-  </fieldset>
-
-  <fieldset>
-    <div class="flex gap-1">
-      <h2 class="text-base font-medium md:text-xl">Duration:</h2>
-      <span class="text-base md:text-xl">
-        <!-- {formatDuration(duration.hour, "hour", "hours")}{" "}
-        {formatDuration(duration.minute, "minute", "minutes")} -->
+      </div>
+      <span class="text-red-500">
+        <!-- {duration.hour === 0 && duration.minute === 0 ? formErrors.time : ""} -->
       </span>
-    </div>
-    <!-- {duration.hour >= 8 ? (
+    </fieldset>
+
+    <fieldset>
+      <div class="flex gap-1">
+        <h2 class="text-base font-medium md:text-xl">Duration:</h2>
+        <span class="text-base md:text-xl">
+          <!-- {formatDuration(duration.hour, "hour", "hours")}{" "}
+        {formatDuration(duration.minute, "minute", "minutes")} -->
+        </span>
+      </div>
+      <!-- {duration.hour >= 8 ? (
       <>
         <span class="text-xl">🤔 </span>
         <span class="text-orange-400">
@@ -209,54 +217,65 @@
     ) : (
       ""
     )} -->
-  </fieldset>
+    </fieldset>
 
-  <fieldset>
-    <div class="flex flex-row items-center">
-      <h2 class="text-base font-medium md:text-xl">How did you feel?</h2>
-      <div
-        class="mx-2 h-2 flex-auto rounded"
-        [class]="barometerColorClass"
-      ></div>
-    </div>
-    <div class="mt-3 flex max-w-full flex-wrap justify-around">
-      <!-- ngFor -->
-      <label class="flex cursor-pointer flex-col items-center">
-        <input
-          class="peer radio hidden"
-          type="radio"
-          required
-          name="barometer"
-        />
-        <!--
-          aria-label={label}
-          value={barometerValue}
+    <fieldset>
+      <div class="flex flex-row items-center">
+        <h2 class="text-base font-medium md:text-xl">How did you feel?</h2>
+        <div
+          class="mx-2 h-2 flex-auto rounded"
+          [class]="barometerColorClass"
+        ></div>
+      </div>
+      <div class="mt-3 flex max-w-full flex-wrap justify-around">
+        <!-- ngFor -->
+        <label
+          *ngFor="let barometerIcon of barometerIcons"
+          class="flex cursor-pointer flex-col items-center"
+        >
+          <input
+            class="peer radio hidden"
+            type="radio"
+            required
+            name="barometer"
+            formControlName="barometer"
+            [ariaLabel]="barometerIcon['label']"
+            [value]="barometerIcon['value']"
+          />
+          <!--
           checked={barometer === barometerValue}
           onChange={(e) => setBarometer(e.target.value)}
          -->
-        <span
-          class="material-symbols-outlined select-none text-5xl text-base-200 peer-checked:text-base-content"
-        >
-          timer
-        </span>
-        <span class="radio-label select-none">label</span>
-      </label>
-    </div>
-  </fieldset>
+          <span
+            class="material-symbols-outlined select-none text-5xl text-base-200 peer-checked:text-base-content"
+          >
+            {{ barometerIcon["icon"] }}
+          </span>
+          <span class="radio-label select-none">
+            {{ barometerIcon["label"] }}
+          </span>
+        </label>
+      </div>
+    </fieldset>
 
-  <div class="mb-3 flex w-full justify-stretch gap-5 pb-3">
-    <button class="btn flex-auto hover:btn-info hover:text-white" type="button">
-      <!-- onClick={(e) => {
+    <div class="mb-3 flex w-full justify-stretch gap-5 pb-3">
+      <button
+        class="btn flex-auto hover:btn-info hover:text-white"
+        type="button"
+      >
+        <!-- onClick={(e) => {
         e.preventDefault();
         navigate(-1);
       }} -->
-      Cancel
-    </button>
-    <button
-      class="btn btn-primary flex-auto text-base-100 hover:bg-[#1357B8]"
-      type="submit"
-    >
-      submitButtonText
-    </button>
-  </div>
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary flex-auto text-base-100 hover:bg-[#1357B8]"
+        type="submit"
+      >
+        {{ submitButtonLabel }}
+      </button>
+    </div>
+  </form>
 </main>
+{{ activityForm.value | json }}
