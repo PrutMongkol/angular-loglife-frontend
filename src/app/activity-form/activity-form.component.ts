@@ -1,5 +1,12 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,6 +20,7 @@ import { DateTime } from 'luxon';
 import { Activity } from '../activity';
 import { formatDuration } from '../shared/format-duration';
 import { ActivityService } from '../activity.service';
+import { Router } from '@angular/router';
 
 // a validator function to check if the start time is equal the end time
 function endTimeValidator(startTime: string): ValidatorFn {
@@ -30,42 +38,38 @@ function endTimeValidator(startTime: string): ValidatorFn {
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './activity-form.component.html',
 })
-export class ActivityFormComponent implements OnInit, DoCheck {
+export class ActivityFormComponent implements OnChanges, OnInit, DoCheck {
   activityForm = this.formBuilder.nonNullable.group({
-    title: [this.activity?.title || ''],
-    description: [this.activity?.description || ''],
-    type: [this.activity?.type || 'Running'],
-    date: [
-      this.activity?.date || DateTime.now().toISODate(),
-      Validators.required,
-    ],
+    title: [''],
+    description: [''],
+    type: ['Running'],
+    date: [DateTime.now().toISODate(), Validators.required],
     startTime: [
-      this.activity?.startTime ||
-        DateTime.now()
-          .minus({ minutes: 30 })
-          .toLocaleString(DateTime.TIME_24_SIMPLE),
+      DateTime.now()
+        .minus({ minutes: 30 })
+        .toLocaleString(DateTime.TIME_24_SIMPLE),
       Validators.required,
     ],
     endTime: [
-      this.activity?.endTime ||
-        DateTime.now().toLocaleString(DateTime.TIME_24_SIMPLE),
+      DateTime.now().toLocaleString(DateTime.TIME_24_SIMPLE),
       [Validators.required],
     ],
     duration: this.formBuilder.nonNullable.group({
-      hours: [this.activity?.duration.hour || 0],
-      minutes: [this.activity?.duration.minute || 0],
+      hours: [0],
+      minutes: [30],
     }),
-    barometer: [this.activity?.barometer || '3'],
+    barometer: ['3'],
   });
 
   oldStartTime: string | undefined;
   oldEndTime: string | undefined;
 
   @Input() formType!: string;
+  @Input() activityId?: string;
+  activity?: Activity;
+
   formHeading: string = '';
   submitButtonLabel: string = '';
-
-  activity?: Activity;
 
   activityTypeIcons: { [key: string]: string }[] = [
     { type: 'Running', icon: 'sprint' },
@@ -98,10 +102,33 @@ export class ActivityFormComponent implements OnInit, DoCheck {
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
+    private router: Router,
     private activityService: ActivityService
   ) {}
 
   formatDuration = formatDuration;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['activityId']) {
+      this.activityService
+        .getActivityById(this.activityId!)
+        .subscribe((activity) => {
+          this.activityForm.setValue({
+            title: activity.title,
+            description: activity.description,
+            type: activity.type,
+            date: activity.date,
+            startTime: activity.startTime,
+            endTime: activity.endTime,
+            duration: {
+              hours: activity.duration.hour,
+              minutes: activity.duration.minute,
+            },
+            barometer: activity.barometer,
+          });
+        });
+    }
+  }
 
   ngOnInit() {
     this.activityForm
@@ -187,10 +214,14 @@ export class ActivityFormComponent implements OnInit, DoCheck {
 
     if (this.formType === 'create') {
       this.activityService.createActivity(this.activity).subscribe(() => {
-        this.goBack();
+        this.router.navigate(['/activities']);
       });
     } else {
-      alert('Not Implemented Yet');
+      this.activityService
+        .updateActivity(this.activity, this.activityId!)
+        .subscribe(() => {
+          this.router.navigate(['/activities/' + this.activityId]);
+        });
     }
   }
 }
