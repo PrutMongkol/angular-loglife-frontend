@@ -87,8 +87,11 @@
           formControlName="endTime"
         />
       </div>
-      <span class="text-red-500">
-        <!-- {duration.hour === 0 && duration.minute === 0 ? formErrors.time : ""} -->
+      <span
+      *ngIf="activityForm.controls.startTime.errors?.['required'] || activityForm.controls.endTime.errors?.['required']"
+      class="text-red-500"
+      >
+        Start and end time are required
       </span>
     </fieldset>
 
@@ -164,6 +167,7 @@
       <button
         class="btn btn-primary flex-auto text-base-100 hover:bg-[#1357B8]"
         type="submit"
+        [disabled]="activityForm.invalid"
       >
         {{ submitButtonLabel }}
       </button>

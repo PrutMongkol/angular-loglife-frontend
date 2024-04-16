@@ -1,10 +1,20 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
 import { formatDuration } from '../shared/format-duration';
+
+// a validator function to check if the start time is equal the end time
+function endTimeValidator(startTime: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (control.value === startTime) {
+      return { endTimeEqualStartTime: true };
+    }
+    return null;
+  }
+}
 
 @Component({
   selector: 'app-activity-form',
@@ -18,16 +28,21 @@ export class ActivityFormComponent implements OnInit, DoCheck {
     title: [this.activity?.title || ''],
     description: [this.activity?.description || ''],
     type: [this.activity?.type || 'Running'],
-    date: [this.activity?.date || DateTime.now().toISODate()],
+    date: [
+      this.activity?.date || DateTime.now().toISODate(),
+      Validators.required,
+    ],
     startTime: [
       this.activity?.startTime ||
         DateTime.now()
           .minus({ minutes: 30 })
           .toLocaleString(DateTime.TIME_24_SIMPLE),
+      Validators.required,
     ],
     endTime: [
       this.activity?.endTime ||
         DateTime.now().toLocaleString(DateTime.TIME_24_SIMPLE),
+      [Validators.required],
     ],
     duration: this.formBuilder.nonNullable.group({
       hours: [this.activity?.duration.hour || 0],
@@ -73,14 +88,13 @@ export class ActivityFormComponent implements OnInit, DoCheck {
     return this.barometerColor[this.activityForm.value.barometer || '3'];
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private location: Location,
-  ) {}
+  constructor(private formBuilder: FormBuilder, private location: Location) {}
 
   formatDuration = formatDuration;
 
   ngOnInit() {
+    this.activityForm.get('endTime')?.addValidators(endTimeValidator(this.activityForm.value.startTime || ''));
+
     this.formHeading =
       this.formType === 'create' ? 'Create Activity' : 'Edit Activity';
     this.submitButtonLabel = this.formType === 'create' ? 'Create' : 'Edit';
