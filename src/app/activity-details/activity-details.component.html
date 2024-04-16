@@ -9,7 +9,7 @@
       <h1
         class="flex-auto text-center text-5xl font-semibold text-white md:flex-none md:-translate-y-10 md:px-2"
       >
-        {{ activity!.type | uppercase }}
+        {{ activity?.type | uppercase }}
       </h1>
       <img
         class="ml-2 mt-2 size-24 md:size-32 md:-translate-y-10"
@@ -45,10 +45,10 @@
           class="flex min-h-12 min-w-12 items-center justify-center rounded-full border-2 border-base-200"
         >
           <span class="material-symbols-outlined">
-            {{ materialIcons[activity!.type] }}
+            {{ materialIcons[activity?.type || "Other"] }}
           </span>
         </div>
-        <h2 class="text-lg font-bold">{{ activity!.title }}</h2>
+        <h2 class="text-lg font-bold">{{ activity?.title || "" }}</h2>
       </div>
       <div class="my-2 h-0.5 bg-base-200"></div>
       <div class="flex flex-row items-center gap-2">
@@ -79,13 +79,18 @@
         </div>
         <div>
           <p class="font-light">
-            {{ activity!.startTime }} - {{ activity!.endTime }}
+            {{ activity?.startTime || "00:00" }} -
+            {{ activity?.endTime || "00:30" }}
           </p>
           <p class="font-light">
             {{
-              formatDuration(activity!.duration.hour, "hour", "hours") +
+              formatDuration(activity?.duration?.hour || 0, "hour", "hours") +
                 " " +
-                formatDuration(activity!.duration.minute, "minute", "minutes")
+                formatDuration(
+                  activity?.duration?.minute || 30,
+                  "minute",
+                  "minutes"
+                )
             }}
           </p>
         </div>
@@ -100,7 +105,7 @@
           </span>
         </div>
         <p class="font-light">
-          Feeling: {{ barometerTexts[activity!.barometer] }}
+          Feeling: {{ barometerTexts[activity?.barometer || "3"] }}
         </p>
       </div>
       <div class="my-2 h-0.5 bg-base-200"></div>
@@ -162,7 +167,11 @@
     </div>
   </main>
 
-  <dialog id="delete_modal" #delete_modal class="modal modal-bottom sm:modal-middle">
+  <dialog
+    id="delete_modal"
+    #delete_modal
+    class="modal modal-bottom sm:modal-middle"
+  >
     <div class="modal-box">
       <h3 class="text-lg font-bold">Delete Activity</h3>
       <p class="py-4">

@@ -132,10 +132,10 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   handleDelete(): void {
-    this.activityService.deleteActivity(this.activity!.activityId!).subscribe(
-      () => {
+    this.activityService
+      .deleteActivity(this.activity!.activityId!)
+      .subscribe(() => {
         this.goBack();
-      }
-    );
+      });
   }
 }
