@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
@@ -70,7 +70,6 @@ export class ActivityDetailsComponent implements OnInit {
     private activityService: ActivityService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
   ) {
     this.barometerColorClass = this.activity?.barometer
       ? this.barometerColors[this.activity.barometer]
@@ -95,14 +94,14 @@ export class ActivityDetailsComponent implements OnInit {
 
   formatDuration = formatDuration;
 
-  goBack(): void {
-    this.location.back();
+  goToActivities(): void {
+    this.router.navigate(['/activities']);
   }
 
   getActivity(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     if (id === '') {
-      this.goBack();
+      this.goToActivities();
       return;
     }
     this.activityService.getActivityById(id).subscribe((activity) => {
@@ -135,7 +134,7 @@ export class ActivityDetailsComponent implements OnInit {
     this.activityService
       .deleteActivity(this.activity!.activityId!)
       .subscribe(() => {
-        this.goBack();
+        this.goToActivities();
       });
   }
 }
