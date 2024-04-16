@@ -32,4 +32,8 @@ export class ActivityService {
   createActivity(activity: Activity): Observable<any> {
     return this.http.post(environment.apiUrl + '/activities', activity);
   }
+
+  deleteActivity(id: string): Observable<any> {
+    return this.http.delete(environment.apiUrl + '/activities/' + id);
+  }
 }
