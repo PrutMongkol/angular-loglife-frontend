@@ -132,6 +132,10 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   handleDelete(): void {
-    alert('Not Implemented Yet');
+    this.activityService.deleteActivity(this.activity!.activityId!).subscribe(
+      () => {
+        this.goBack();
+      }
+    );
   }
 }
