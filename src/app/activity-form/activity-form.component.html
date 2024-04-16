@@ -111,16 +111,12 @@
           }}
         </span>
       </div>
-      <!-- {duration.hour >= 8 ? (
-      <>
+      <div [class.hidden]="(activityForm.value.duration?.hours ?? 0) < 8">
         <span class="text-xl">🤔 </span>
         <span class="text-orange-400">
           Duration seems long. Are you sure it&apos;s correct?
         </span>
-      </>
-    ) : (
-      ""
-    )} -->
+      </div>
     </fieldset>
 
     <fieldset>
@@ -161,11 +157,8 @@
       <button
         class="btn flex-auto hover:btn-info hover:text-white"
         type="button"
+        (click)="goBack()"
       >
-        <!-- onClick={(e) => {
-        e.preventDefault();
-        navigate(-1);
-      }} -->
         Cancel
       </button>
       <button

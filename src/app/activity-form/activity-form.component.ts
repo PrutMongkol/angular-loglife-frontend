@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
 import { formatDuration } from '../shared/format-duration';
@@ -73,7 +73,10 @@ export class ActivityFormComponent implements OnInit, DoCheck {
     return this.barometerColor[this.activityForm.value.barometer || '3'];
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private location: Location,
+  ) {}
 
   formatDuration = formatDuration;
 
@@ -96,6 +99,10 @@ export class ActivityFormComponent implements OnInit, DoCheck {
       this.oldStartTime = this.activityForm.value.startTime;
       this.oldEndTime = this.activityForm.value.endTime;
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   updateDuration() {
