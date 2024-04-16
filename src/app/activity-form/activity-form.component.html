@@ -39,7 +39,7 @@
             class="peer hidden"
             required
             type="radio"
-            name="activityType"
+            name="type"
             formControlName="type"
             [value]="typeIcon['type']"
             [ariaLabel]="typeIcon['type']"
@@ -96,8 +96,19 @@
       <div class="flex gap-1">
         <h2 class="text-base font-medium md:text-xl">Duration:</h2>
         <span class="text-base md:text-xl">
-          <!-- {formatDuration(duration.hour, "hour", "hours")}{" "}
-        {formatDuration(duration.minute, "minute", "minutes")} -->
+          {{
+            formatDuration(
+              activityForm.value.duration?.hours,
+              "hour",
+              "hours"
+            ) +
+              " " +
+              formatDuration(
+                activityForm.value.duration?.minutes,
+                "minute",
+                "minutes"
+              )
+          }}
         </span>
       </div>
       <!-- {duration.hour >= 8 ? (

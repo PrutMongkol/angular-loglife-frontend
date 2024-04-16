@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 import { Activity } from '../activity';
+import { formatDuration } from '../shared/format-duration';
 
 @Component({
   selector: 'app-activity-form',
@@ -12,8 +13,8 @@ import { Activity } from '../activity';
   templateUrl: './activity-form.component.html',
   styleUrl: './activity-form.component.css',
 })
-export class ActivityFormComponent implements OnInit {
-  activityForm = this.formBuilder.group({
+export class ActivityFormComponent implements OnInit, DoCheck {
+  activityForm = this.formBuilder.nonNullable.group({
     title: [this.activity?.title || ''],
     description: [this.activity?.description || ''],
     type: [this.activity?.type || 'Running'],
@@ -28,12 +29,15 @@ export class ActivityFormComponent implements OnInit {
       this.activity?.endTime ||
         DateTime.now().toLocaleString(DateTime.TIME_24_SIMPLE),
     ],
-    duration: this.formBuilder.group({
-      hours: [this.activity?.duration.hour || ''],
-      minutes: [this.activity?.duration.minute || ''],
+    duration: this.formBuilder.nonNullable.group({
+      hours: [this.activity?.duration.hour || 0],
+      minutes: [this.activity?.duration.minute || 0],
     }),
     barometer: [this.activity?.barometer || '3'],
   });
+
+  oldStartTime: string | undefined;
+  oldEndTime: string | undefined;
 
   @Input() formType!: string;
   formHeading: string = '';
@@ -71,32 +75,46 @@ export class ActivityFormComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder) {}
 
+  formatDuration = formatDuration;
+
   ngOnInit() {
     this.formHeading =
       this.formType === 'create' ? 'Create Activity' : 'Edit Activity';
     this.submitButtonLabel = this.formType === 'create' ? 'Create' : 'Edit';
 
-    if (this.activityForm.get('startTime')) {
-      this.activityForm.get('startTime')?.valueChanges.subscribe(startTime => {
-        this.updateDuration();
-      });
-    }
+    this.oldStartTime = this.activityForm.value.startTime;
+    this.oldEndTime = this.activityForm.value.endTime;
+    this.updateDuration();
+  }
 
-    if (this.activityForm.get('endTime')) {
-      this.activityForm.get('endTime')?.valueChanges.subscribe(endTime => {
-        this.updateDuration();
-      });
+  ngDoCheck() {
+    if (
+      this.oldStartTime !== this.activityForm.value.startTime ||
+      this.oldEndTime !== this.activityForm.value.endTime
+    ) {
+      this.updateDuration();
+      this.oldStartTime = this.activityForm.value.startTime;
+      this.oldEndTime = this.activityForm.value.endTime;
     }
   }
 
-  // TODO: Correctly implement this method
-  // - offset the startTime correctly in case of startTime > endTime
   updateDuration() {
-    const startTime = DateTime.fromFormat(this.activityForm.value.startTime ?? '', 'HH:mm');
-    const endTime = DateTime.fromFormat(this.activityForm.value.endTime ?? '', 'HH:mm');
+    const startTime = DateTime.fromFormat(
+      this.activityForm.value.startTime ?? '',
+      'HH:mm'
+    );
+    let endTime = DateTime.fromFormat(
+      this.activityForm.value.endTime ?? '',
+      'HH:mm'
+    );
 
     if (startTime.isValid && endTime.isValid) {
+      if (startTime > endTime) {
+        endTime = endTime.plus({ days: 1 });
+      }
+
       const duration = endTime.diff(startTime, ['hours', 'minutes']);
+
       this.activityForm.get('duration')?.setValue({
         hours: duration.hours,
         minutes: duration.minutes,
@@ -104,7 +122,7 @@ export class ActivityFormComponent implements OnInit {
     }
   }
 
-  handleSubmit(): void {
+  handleSubmit() {
     alert('Not Implemented Yet');
   }
 }
