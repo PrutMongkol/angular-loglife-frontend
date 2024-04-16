@@ -33,6 +33,10 @@ export class ActivityService {
     return this.http.post(environment.apiUrl + '/activities', activity);
   }
 
+  updateActivity(activity: Activity, activityId: string): Observable<any> {
+    return this.http.put(environment.apiUrl + '/activities/' + activityId, activity);
+  }
+
   deleteActivity(id: string): Observable<any> {
     return this.http.delete(environment.apiUrl + '/activities/' + id);
   }
