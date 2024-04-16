@@ -5,11 +5,13 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ActivityListComponent } from './activity-list/activity-list.component';
 import { ActivityDetailsComponent } from './activity-details/activity-details.component';
 import { ActivityCreateComponent } from './activity-create/activity-create.component';
+import { ActivityEditComponent } from './activity-edit/activity-edit.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'activities', component: ActivityListComponent },
   { path: 'activities/create', component: ActivityCreateComponent},
+  { path: 'activities/edit/:id', component: ActivityEditComponent},
   { path: 'activities/:id', component: ActivityDetailsComponent},
 ];
