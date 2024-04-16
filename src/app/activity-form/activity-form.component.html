@@ -4,8 +4,8 @@
   <form
     class="mx-3 my-3 flex h-full flex-col justify-between gap-4"
     [formGroup]="activityForm"
+    (ngSubmit)="handleSubmit()"
   >
-    <!-- onSubmit={handleSubmit} -->
     <h1 class="text-5xl font-semibold">{{ formHeading }}</h1>
     <fieldset>
       <h2 class="text-base font-medium md:text-xl">Activity Title</h2>
@@ -65,6 +65,12 @@
         aria-label="Date"
         formControlName="date"
       />
+      <span
+        *ngIf="activityForm.controls.date.errors?.['required']"
+        class="text-red-500"
+      >
+        Date is required
+      </span>
     </fieldset>
 
     <fieldset class="flex max-w-full flex-col justify-around">
@@ -88,8 +94,8 @@
         />
       </div>
       <span
-      *ngIf="activityForm.controls.startTime.errors?.['required'] || activityForm.controls.endTime.errors?.['required']"
-      class="text-red-500"
+        *ngIf="activityForm.controls.startTime.errors?.['required'] || activityForm.controls.endTime.errors?.['required']"
+        class="text-red-500"
       >
         Start and end time are required
       </span>

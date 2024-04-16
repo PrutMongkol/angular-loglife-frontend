@@ -1,10 +1,18 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, DoCheck, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { DateTime } from 'luxon';
 
 import { Activity } from '../activity';
 import { formatDuration } from '../shared/format-duration';
+import { ActivityService } from '../activity.service';
 
 // a validator function to check if the start time is equal the end time
 function endTimeValidator(startTime: string): ValidatorFn {
@@ -13,7 +21,7 @@ function endTimeValidator(startTime: string): ValidatorFn {
       return { endTimeEqualStartTime: true };
     }
     return null;
-  }
+  };
 }
 
 @Component({
@@ -21,7 +29,6 @@ function endTimeValidator(startTime: string): ValidatorFn {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './activity-form.component.html',
-  styleUrl: './activity-form.component.css',
 })
 export class ActivityFormComponent implements OnInit, DoCheck {
   activityForm = this.formBuilder.nonNullable.group({
@@ -88,12 +95,20 @@ export class ActivityFormComponent implements OnInit, DoCheck {
     return this.barometerColor[this.activityForm.value.barometer || '3'];
   }
 
-  constructor(private formBuilder: FormBuilder, private location: Location) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private location: Location,
+    private activityService: ActivityService
+  ) {}
 
   formatDuration = formatDuration;
 
   ngOnInit() {
-    this.activityForm.get('endTime')?.addValidators(endTimeValidator(this.activityForm.value.startTime || ''));
+    this.activityForm
+      .get('endTime')
+      ?.addValidators(
+        endTimeValidator(this.activityForm.value.startTime || '')
+      );
 
     this.formHeading =
       this.formType === 'create' ? 'Create Activity' : 'Edit Activity';
@@ -144,6 +159,38 @@ export class ActivityFormComponent implements OnInit, DoCheck {
   }
 
   handleSubmit() {
-    alert('Not Implemented Yet');
+    this.activityForm.markAllAsTouched();
+    if (this.activityForm.invalid) {
+      return;
+    }
+
+    const title = (
+      this.activityForm.value.title ||
+      this.activityForm.value.type ||
+      ''
+    ).trim();
+    const description = (this.activityForm.value.description || '').trim();
+
+    this.activity = {
+      title: title,
+      description: description,
+      type: this.activityForm.value.type!,
+      date: this.activityForm.value.date!,
+      startTime: this.activityForm.value.startTime!,
+      endTime: this.activityForm.value.endTime!,
+      duration: {
+        hour: this.activityForm.value.duration!.hours || 0,
+        minute: this.activityForm.value.duration!.minutes || 0,
+      },
+      barometer: this.activityForm.value.barometer!,
+    };
+
+    if (this.formType === 'create') {
+      this.activityService.createActivity(this.activity).subscribe(() => {
+        this.goBack();
+      });
+    } else {
+      alert('Not Implemented Yet');
+    }
   }
 }
