@@ -28,4 +28,8 @@ export class ActivityService {
   getActivityById(id: string): Observable<Activity> {
     return this.http.get<Activity>(environment.apiUrl + '/activities/' + id);
   }
+
+  createActivity(activity: Activity): Observable<any> {
+    return this.http.post(environment.apiUrl + '/activities', activity);
+  }
 }
