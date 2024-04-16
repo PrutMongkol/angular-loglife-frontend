@@ -47,7 +47,6 @@ export class ListedCardComponent implements OnInit {
   }
 
   handleEdit(id: any) {
-    // this.router.navigate([`/activities/edit/${id}`]);
-    alert('Not Implemented');
+    this.router.navigate([`/activities/edit/${id}`]);
   }
 }
