@@ -18,7 +18,7 @@ export class ActivityService {
     skip = '',
     take = ''
   ): Observable<Activity[]> {
-    if (environment.production === false) {
+    if (environment.production === true) {
       return this.http.get<Activity[]>(
         environment.apiUrl +
           '/activities/user/me' +
