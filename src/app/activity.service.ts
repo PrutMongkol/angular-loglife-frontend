@@ -18,11 +18,20 @@ export class ActivityService {
     skip = '',
     take = ''
   ): Observable<Activity[]> {
-    return this.http.get<Activity[]>(
-      environment.apiUrl +
-        '/activities/user/me' +
-        `?type=${type}&sort=${sort}&skip=${skip}&take=${take}`
-    );
+    if (environment.production === false) {
+      return this.http.get<Activity[]>(
+        environment.apiUrl +
+          '/activities/user/me' +
+          `?type=${type}&sort=${sort}&skip=${skip}&take=${take}`
+      );
+    }
+    else {
+      return this.http.get<Activity[]>(
+        environment.apiUrl +
+          '/activities' +
+          `?type=${type}&sort=${sort}&skip=${skip}&take=${take}`
+      );
+    }
   }
 
   getActivityById(id: string): Observable<Activity> {
@@ -34,7 +43,10 @@ export class ActivityService {
   }
 
   updateActivity(activity: Activity, activityId: string): Observable<any> {
-    return this.http.put(environment.apiUrl + '/activities/' + activityId, activity);
+    return this.http.put(
+      environment.apiUrl + '/activities/' + activityId,
+      activity
+    );
   }
 
   deleteActivity(id: string): Observable<any> {
